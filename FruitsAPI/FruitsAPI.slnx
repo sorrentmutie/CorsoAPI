@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="DemoBlazorApp/DemoBlazorApp.csproj" Id="b9034026-81e0-4784-8b37-b384d7bdfede" />
+  <Project Path="FruitsAPI/FruitsAPI.csproj" />
+  <Project Path="FruitsCommon/FruitsCommon.csproj" Id="503fcfe2-f75f-4eea-9b05-cb6faf6fa137" />
+</Solution>

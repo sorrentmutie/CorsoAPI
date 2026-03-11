@@ -1,0 +1,67 @@
+﻿@page "/"
+@using DemoBlazorApp.Services
+@using FruitsAPI.Models
+@rendermode InteractiveServer
+@inject IFruitsService service
+
+<PageTitle>Home</PageTitle>
+
+<h1>Hello, world!</h1>
+
+@if(frutto is null)
+{
+    <FruitsList fruits="fruits" OnDelete="Cancella" OnModifica="Modifica" />
+
+    <button class="btn btn-primary" @onclick="AggiungiFrutto"> Aggiungi Frutto</button>
+    <button class="btn btn-warning">Test Bootstrap</button>
+   
+} else
+{
+    <Dettaglio frutto="frutto" OnSalva="SalvaFrutto"/>
+}
+
+@code{
+    private FruitModel? frutto;
+    public List<FruitModel>? fruits { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        fruits = await service.GetFruitsAsync();
+    }
+
+
+    private void AggiungiFrutto()
+    {
+        // Logica per aggiungere un frutto
+        frutto = new FruitModel { instock  = true };
+    }
+
+    private async Task SalvaFrutto(FruitModel frutto)
+    {
+        if (frutto.id == 0)
+        {
+            await service.AddFruitAsync(frutto);            
+        }
+        else
+        {
+            await service.UpdateFruitAsync(frutto); 
+        }
+        this.frutto = null;
+        fruits = await service.GetFruitsAsync(); // Aggiorna la lista dei frutti    
+    }
+
+    private async Task Cancella(FruitModel frutto)
+    {
+        await service.DeleteFruitAsync(frutto.id);
+        fruits = await service.GetFruitsAsync(); // Aggiorna la lista dei frutti
+    }
+
+    private async Task Modifica(FruitModel fruttodaModificare)
+    {
+        frutto = fruttodaModificare;
+        // await service.DeleteFruitAsync(frutto.id);
+        // fruits = await service.GetFruitsAsync(); // Aggiorna la lista dei frutti
+    }
+
+}
+

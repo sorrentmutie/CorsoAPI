@@ -1,0 +1,49 @@
+﻿@using DemoBlazorApp.Services
+@using FruitsAPI.Models
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
+
+
+<h3>Fruits List</h3>
+
+@if(fruits == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table table-bordered table-hover table-striped">
+        <tr>
+            <th>Name</th>
+            <th>ID</th>
+            <th> </th>
+        </tr>
+        @foreach (var fruit in fruits)
+        {
+            <tr>
+                <td>@fruit.name</td>
+                <td>@fruit.id</td>  
+                <td>
+                    <button class="btn btn-warning" @onclick="e => OnDelete.InvokeAsync(fruit)">Cancella</button>
+                </td>
+                <td>
+                    <button class="btn btn-success" @onclick="e => OnModifica.InvokeAsync(fruit)">Modifica</button>
+                </td>
+            </tr>
+        }
+
+    </table>
+}
+
+@code {
+
+    [Parameter]
+    public List<FruitModel>? fruits { get; set; }
+
+    [Parameter]
+    public EventCallback<FruitModel> OnDelete { get; set; }
+
+    [Parameter]
+    public EventCallback<FruitModel> OnModifica { get; set; }
+
+
+}
